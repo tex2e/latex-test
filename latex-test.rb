@@ -38,6 +38,10 @@ class ReportFormat
     }mx)
   end
 
+  def self.get_listings
+    @@text.scan(/listing.*?\[(.*?)\]/).flatten
+  end
+
   def self.get_sections
     /\\section{.*}/ === @@text
   end
@@ -62,7 +66,7 @@ class TestReportFormat < Test::Unit::TestCase
     end
   end
 
-  def test_figure_caption_has_placed_collect_position
+  def test_figure_caption_has_placed_correct_position
     ReportFormat.get_figs.each do |fig|
       skip nil if fig.nil?
       assert_match /\\includegraphics.*\\caption{.*?}.*?/m, fig, "in Figure tag, \\caption must be placed after \\includegraphics"
@@ -90,7 +94,7 @@ class TestReportFormat < Test::Unit::TestCase
     end
   end
 
-  def test_table_caption_has_placed_collect_position
+  def test_table_caption_has_placed_correct_position
     ReportFormat.get_tables.each do |tab|
       skip nil if tab.nil?
       assert_match /\\caption{.*?}.*?\\begin{tabular}/m, tab, "in Table tag, \\caption must be placed behind before \\begin{tabular}"
@@ -104,7 +108,24 @@ class TestReportFormat < Test::Unit::TestCase
     end
   end
 
+
+  def test_listing_contains_label_definition
+    ReportFormat.get_listings.each do |list|
+      skip nil if list.nil?
+      assert_match /label=.*?/, list, "\\label is not defined at listing"
+    end
+  end
+
+  def test_listing_contains_caption_definition
+    ReportFormat.get_listings.each do |list|
+      skip nil if list.nil?
+      assert_match /caption=.*?/, list, "\\caption is not defined at listing"
+    end
+  end
+
   def test_wrote_with_section
     assert_equal true, ReportFormat.get_sections
   end
 end
+
+ReportFormat.get_listings
