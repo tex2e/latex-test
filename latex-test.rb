@@ -49,48 +49,56 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_figure_contains_label_definition
     ReportFormat.get_figs.each do |fig|
+      skip nil if fig.nil?
       assert_match /\\label{.*?}/, fig, "\\label is not defined at figure"
     end
   end
 
   def test_figure_contains_caption_definition
     ReportFormat.get_figs.each do |fig|
+      skip nil if fig.nil?
       assert_match /\\caption{.*?}/, fig, "\\caption is not defined at figure"
     end
   end
 
   def test_figure_caption_has_placed_collect_position
     ReportFormat.get_figs.each do |fig|
+      skip nil if fig.nil?
       assert_match /\\includegraphics.*\\caption{.*?}.*?/m, fig, "in Figure tag, \\caption must be placed after \\includegraphics"
     end
   end
 
   def test_figure_has_centering
     ReportFormat.get_figs.each do |fig|
+      skip nil if fig.nil?
       assert_match /center/, fig, "\\figure must be centering"
     end
   end
 
   def test_table_contains_label_definition
     ReportFormat.get_tables.each do |tab|
+      skip nil if tab.nil?
       assert_match /\\label{.*?}/, tab, "\\label is not defined at table"
     end
   end
 
   def test_table_contains_caption_definition
     ReportFormat.get_tables.each do |tab|
+      skip nil if tab.nil?
       assert_match /\\caption{.*?}/, tab, "\\caption is not defined at table"
     end
   end
 
   def test_table_caption_has_placed_collect_position
     ReportFormat.get_tables.each do |tab|
+      skip nil if tab.nil?
       assert_match /\\caption{.*?}.*?\\begin{tabular}/m, tab, "in Table tag, \\caption must be placed behind before \\begin{tabular}"
     end
   end
 
   def test_table_has_centering
     ReportFormat.get_tables.each do |tab|
+      skip nil if tab.nil?
       assert_match /center/, tab, "\\table must be centering"
     end
   end
