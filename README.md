@@ -19,6 +19,8 @@ All comment parts are ignored before testing.
   -  does table contains 'caption' definition
   -  is the table caption been placed correct position
   -  is the table centeringed
+  -  does listing contain 'label' definition
+  -  does listing contain 'caption' definition
   -  has the document wrote with section
   
 ## Run
