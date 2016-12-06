@@ -3,8 +3,9 @@ require 'test/unit'
 class ReportFormat
   file = ARGV[0]
   raise ArgumentError, 'wrong number of arguments (expected 1)' if file.nil?
-  @@text = File.read(file).gsub!(/%.*$/,"")#s.split("\n")
-  # p @@text
+  @@text = File.read(file)
+  @@text.gsub!(/\%.*$/,"") unless @@text.nil?
+
   def self.get_labels
     @@text.scan(/label[={]([^,\}\]]*)/).flatten.sort.uniq
   end
