@@ -39,7 +39,7 @@ class ReportFormat
   end
 
   def self.get_sections
-    p /\\section{.*}/ === @@text
+    /\\section{.*}/ === @@text
   end
 end
 
