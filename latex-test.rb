@@ -14,22 +14,22 @@ class LaTeX
 
   def labels(&block)
     @labels ||= @text.scan(/label[={]([^,\}\]]*)/).flatten
-      .tap { |array| array.each(&block) if block_given? }
+    @labels.tap { |array| array.each(&block) if block_given? }
   end
 
   def refs(&block)
     @refs ||= @text.scan(/\\ref{(.*?)}/).flatten
-      .tap { |array| array.each(&block) if block_given? }
+    @refs.tap { |array| array.each(&block) if block_given? }
   end
 
   def figures(&block)
     @figures ||= @text.scan(/\\begin{figure}(.*?)\\end{figure}/m).flatten
-      .tap { |array| array.each(&block) if block_given? }
+    @figures.tap { |array| array.each(&block) if block_given? }
   end
 
   def tables(&block)
     @tables ||= @text.scan(/\\begin{table}(.*?)\\end{table}/mx).flatten
-      .tap { |array| array.each(&block) if block_given? }
+    @tables.tap { |array| array.each(&block) if block_given? }
   end
 
   def listings(&block)
@@ -39,12 +39,12 @@ class LaTeX
       \\lstinputlisting.*?\[(.*?)\]
     }mx)
     .flatten.compact
-    .tap { |array| array.each(&block) if block_given? }
+    @listings.tap { |array| array.each(&block) if block_given? }
   end
 
   def sections(&block)
     @sections ||= @text.scan(/\\section{.*}/)
-      .tap { |array| array.each(&block) if block_given? }
+    @sections.tap { |array| array.each(&block) if block_given? }
   end
 end
 
