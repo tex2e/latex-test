@@ -66,6 +66,10 @@ end
 # - [ ] ページの上下左右の余白が 2.5cm〜3.0cm程度の範囲になっているか?
 # - [ ] 日本語の作文ルールに従っているか?
 #
+# ### Custom Rules
+#
+# - [x] 句読点には「。」と「、」の代わりに「．」と「，」を使う。
+#
 
 class TestReportFormat < Test::Unit::TestCase
   @@filepath = ARGV[0]
@@ -156,5 +160,9 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_should_use_absolute_ref
     assert_no_match /[上下右左]の[表図]/, @pdf.document, 'should use absolute ref like "図1" or "表1"'
+  end
+
+  def test_should_not_use_ordinary_punctuation
+    assert_no_match /[、。]/, @pdf.document, 'should use "．" and "，" as punctuation'
   end
 end
