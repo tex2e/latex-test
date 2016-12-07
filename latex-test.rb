@@ -1,33 +1,39 @@
 require 'test/unit'
 
 class PDF
+  attr_reader :text
+
   def initialize(filepath)
     @text = File.read(filepath)
     @text.gsub!(/\%.*$/, "")
   end
 
+  def document
+    @document ||= @text.match(/\\begin{document}(.*?)\\end{document}/m)[1]
+  end
+
   def labels(&block)
-    @text.scan(/label[={]([^,\}\]]*)/).flatten
+    @labels ||= @text.scan(/label[={]([^,\}\]]*)/).flatten
       .tap { |array| array.each(&block) if block_given? }
   end
 
   def refs(&block)
-    @text.scan(/\\ref{(.*?)}/).flatten
+    @refs ||= @text.scan(/\\ref{(.*?)}/).flatten
       .tap { |array| array.each(&block) if block_given? }
   end
 
   def figures(&block)
-    @text.scan(/\\begin{figure}(.*?)\\end{figure}/m).flatten
+    @figures ||= @text.scan(/\\begin{figure}(.*?)\\end{figure}/m).flatten
       .tap { |array| array.each(&block) if block_given? }
   end
 
   def tables(&block)
-    @text.scan(/\\begin{table}(.*?)\\end{table}/mx).flatten
+    @tables ||= @text.scan(/\\begin{table}(.*?)\\end{table}/mx).flatten
       .tap { |array| array.each(&block) if block_given? }
   end
 
   def listings(&block)
-    @text.scan(%r{
+    @listings ||= @text.scan(%r{
       \\begin{lstlisting}.*?\[(.*?)\]
       |
       \\lstinputlisting.*?\[(.*?)\]
@@ -37,7 +43,7 @@ class PDF
   end
 
   def sections(&block)
-    @text.scan(/\\section{.*}/)
+    @sections ||= @text.scan(/\\section{.*}/)
       .tap { |array| array.each(&block) if block_given? }
   end
 end
