@@ -17,24 +17,23 @@ class PDF
   end
 
   def figures(&block)
-    @text.scan(%r{
-      \\begin{figure}
-      .*?
-      \\end{figure}
-    }mx).tap { |array| array.each(&block) if block_given? }
+    @text.scan(/\\begin{figure}(.*?)\\end{figure}/m).flatten
+      .tap { |array| array.each(&block) if block_given? }
   end
 
   def tables(&block)
-    @text.scan(%r{
-      \\begin{table}
-      .*?
-      \\end{table}
-    }mx).tap { |array| array.each(&block) if block_given? }
+    @text.scan(/\\begin{table}(.*?)\\end{table}/mx).flatten
+      .tap { |array| array.each(&block) if block_given? }
   end
 
   def listings(&block)
-    @text.scan(/listing.*?\[(.*?)\]/).flatten
-      .tap { |array| array.each(&block) if block_given? }
+    @text.scan(%r{
+      \\begin{lstlisting}.*?\[(.*?)\]
+      |
+      \\lstinputlisting.*?\[(.*?)\]
+    }mx)
+    .flatten.compact
+    .tap { |array| array.each(&block) if block_given? }
   end
 
   def sections(&block)
