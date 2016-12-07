@@ -59,7 +59,7 @@ end
 # - [x] 章立てして書いているか?
 # - [x] 図と表はセンタリングされているか?
 # - [x] 図や表の一つ一つに通し番号と具体的なキャプションがついているか?
-# - [ ] 「上の図」「次の表」のような物理的な位置関係ではなく、「図1」「図2」のように番号で参照しているか?
+# - [x] 「上の図」「次の表」のような物理的な位置関係ではなく、「図1」「図2」のように番号で参照しているか?
 # - [ ] 図のキャプションは図の下に、表のキャプションは表の上に、それぞれ配置されているか?
 # - [ ] レポート中の図表は全て本文で説明されているか?
 # - [ ] 本文には 10〜11 ポイントの明朝体が使われているか?
@@ -86,25 +86,25 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_figure_contains_label_definition
     @pdf.figures do |fig|
-      assert_match /\\label{.*?}/, fig, "\\label is not defined at figure"
+      assert_match /\\label{.*?}/, fig, '\\label is not defined at figure'
     end
   end
 
   def test_figure_contains_caption_definition
     @pdf.figures do |fig|
-      assert_match /\\caption{.*?}/, fig, "\\caption is not defined at figure"
+      assert_match /\\caption{.*?}/, fig, '\\caption is not defined at figure'
     end
   end
 
   def test_figure_caption_has_placed_correct_position
     @pdf.figures do |fig|
-      assert_match /\\includegraphics.*\\caption{.*?}.*?/m, fig, "In figure tag, \\caption must be placed after \\includegraphics"
+      assert_match /\\includegraphics.*\\caption{.*?}.*?/m, fig, 'In figure tag, \\caption must be placed after \\includegraphics'
     end
   end
 
   def test_figure_has_centering
     @pdf.figures do |fig|
-      assert_match /center/, fig, "\\figure must be centering"
+      assert_match /center/, fig, '\\figure must be centering'
     end
   end
 
@@ -112,25 +112,25 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_table_contains_label_definition
     @pdf.tables do |tab|
-      assert_match /\\label{.*?}/, tab, "\\label is not defined at table"
+      assert_match /\\label{.*?}/, tab, '\\label is not defined at table'
     end
   end
 
   def test_table_contains_caption_definition
     @pdf.tables do |tab|
-      assert_match /\\caption{.*?}/, tab, "\\caption is not defined at table"
+      assert_match /\\caption{.*?}/, tab, '\\caption is not defined at table'
     end
   end
 
   def test_table_caption_has_placed_correct_position
     @pdf.tables do |tab|
-      assert_match /\\caption{.*?}.*?\\begin{tabular}/m, tab, "In table tag, \\caption must be placed behind before \\begin{tabular}"
+      assert_match /\\caption{.*?}.*?\\begin{tabular}/m, tab, 'In table tag, \\caption must be placed behind before \\begin{tabular}'
     end
   end
 
   def test_table_has_centering
     @pdf.tables do |tab|
-      assert_match /center/, tab, "\\table must be centering"
+      assert_match /center/, tab, '\\table must be centering'
     end
   end
 
@@ -138,17 +138,23 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_listing_contains_label_definition
     @pdf.listings do |list|
-      assert_match /label=.*?/, list, "\\label is not defined at listing"
+      assert_match /label=.*?/, list, '\\label is not defined at listing'
     end
   end
 
   def test_listing_contains_caption_definition
     @pdf.listings do |list|
-      assert_match /caption=.*?/, list, "\\caption is not defined at listing"
+      assert_match /caption=.*?/, list, '\\caption is not defined at listing'
     end
   end
 
   def test_wrote_with_section
     assert !@pdf.sections.empty?
+  end
+
+  # --- document ---
+
+  def test_should_use_absolute_ref
+    assert_no_match /[上下右左]の[表図]/, @pdf.document, 'should use absolute ref like "図1" or "表1"'
   end
 end
