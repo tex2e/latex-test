@@ -7,45 +7,40 @@ class PDF
   end
 
   def labels(&block)
-    @text.scan(/label[={]([^,\}\]]*)/).flatten.sort.uniq
-      .tap(&method(:yield_if_block_given))
+    @text.scan(/label[={]([^,\}\]]*)/).flatten
+      .tap { |array| array.each(&block) if block_given? }
   end
 
-  def refs
-    @text.scan(/\\ref{(.*?)}/).flatten.sort.uniq
-      .tap(&method(:yield_if_block_given))
+  def refs(&block)
+    @text.scan(/\\ref{(.*?)}/).flatten
+      .tap { |array| array.each(&block) if block_given? }
   end
 
-  def figures
+  def figures(&block)
     @text.scan(%r{
       \\begin{figure}
       .*?
       \\end{figure}
-    }mx).tap(&method(:yield_if_block_given))
+    }mx).tap { |array| array.each(&block) if block_given? }
   end
 
-  def tables
+  def tables(&block)
     @text.scan(%r{
       \\begin{table}
       .*?
       \\end{table}
-    }mx).tap(&method(:yield_if_block_given))
+    }mx).tap { |array| array.each(&block) if block_given? }
   end
 
-  def listings
+  def listings(&block)
     @text.scan(/listing.*?\[(.*?)\]/).flatten
-      .tap(&method(:yield_if_block_given))
+      .tap { |array| array.each(&block) if block_given? }
   end
 
-  def sections
-    @text.match(/\\section{.*}/)
-      .tap(&method(:yield_if_block_given))
+  def sections(&block)
+    @text.scan(/\\section{.*}/)
+      .tap { |array| array.each(&block) if block_given? }
   end
-
-  private
-    def yield_if_block_given(array)
-      array.each { |item| yield item } if block_given?
-    end
 end
 
 # ## Check Sheet
@@ -79,7 +74,7 @@ class TestReportFormat < Test::Unit::TestCase
   # --- labels and refs ---
 
   def test_labels_refs
-    assert_equal @pdf.labels, @pdf.refs
+    assert_equal @pdf.labels.sort.uniq, @pdf.refs.sort.uniq
   end
 
   # --- figures ---
@@ -149,6 +144,6 @@ class TestReportFormat < Test::Unit::TestCase
   end
 
   def test_wrote_with_section
-    assert @pdf.sections
+    assert !@pdf.sections.empty?
   end
 end
