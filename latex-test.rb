@@ -1,6 +1,6 @@
 require 'test/unit'
 
-class PDF
+class LaTeX
   attr_reader :text
 
   def initialize(filepath)
@@ -78,7 +78,7 @@ class TestReportFormat < Test::Unit::TestCase
   raise "no such a file or directory: #{@@filepath}" unless File.exist?(@@filepath)
 
   def setup
-    @pdf = PDF.new(@@filepath)
+    @pdf = LaTeX.new(@@filepath)
   end
 
   # --- labels and refs ---
