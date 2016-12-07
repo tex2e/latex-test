@@ -60,7 +60,7 @@ end
 # - [x] 図と表はセンタリングされているか?
 # - [x] 図や表の一つ一つに通し番号と具体的なキャプションがついているか?
 # - [x] 「上の図」「次の表」のような物理的な位置関係ではなく、「図1」「図2」のように番号で参照しているか?
-# - [ ] 図のキャプションは図の下に、表のキャプションは表の上に、それぞれ配置されているか?
+# - [x] 図のキャプションは図の下に、表のキャプションは表の上に、それぞれ配置されているか?
 # - [ ] レポート中の図表は全て本文で説明されているか?
 # - [ ] 本文には 10〜11 ポイントの明朝体が使われているか?
 # - [ ] ページの上下左右の余白が 2.5cm〜3.0cm程度の範囲になっているか?
@@ -104,7 +104,7 @@ class TestReportFormat < Test::Unit::TestCase
 
   def test_figure_has_centering
     @pdf.figures do |fig|
-      assert_match /center/, fig, '\\figure must be centering'
+      assert_match /\\begin{center}|\\centering/, fig, '\\figure must be centering'
     end
   end
 
