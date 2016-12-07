@@ -10,21 +10,23 @@ A simple unit test for my latex doc
 
 All comment parts are ignored before testing.
 
-  -  are the labels correspond refs
-  -  does figure contain 'label' definition
-  -  does figure contain 'caption' definition
-  -  is the figure caption placed correct position
-  -  is the figure centeringed
-  -  does table contain 'label' definition
-  -  does table contains 'caption' definition
-  -  is the table caption been placed correct position
-  -  is the table centeringed
-  -  does listing contain 'label' definition
-  -  does listing contain 'caption' definition
-  -  has the document wrote with section
-  
+  -  Are the labels correspond refs?
+  -  Does figure contain 'label' definition?
+  -  Does figure contain 'caption' definition?
+  -  Is the figure caption placed correct position?
+  -  Is the figure centering?
+  -  Does table contain 'label' definition?
+  -  Does table contains 'caption' definition?
+  -  Is the table caption been placed correct position?
+  -  Is the table centering?
+  -  Does listing contain 'label' definition?
+  -  Does listing contain 'caption' definition?
+  -  Has the document wrote with sections?
+
 ## Run
+
 terminal:
+
 ```
 % ruby latex-test.rb input.tex
 ```
