@@ -69,6 +69,7 @@ end
 # ### Custom Rules
 #
 # - [x] 句読点には「。」と「、」の代わりに「．」と「，」を使う。
+# - [x] ですます調は使わない。
 #
 
 class TestReportFormat < Test::Unit::TestCase
@@ -163,6 +164,10 @@ class TestReportFormat < Test::Unit::TestCase
   end
 
   def test_should_not_use_ordinary_punctuation
-    assert_no_match /[、。]/, @pdf.document, 'should use "．" and "，" as punctuation'
+    assert_no_match /[。、]/, @pdf.document, 'should use "．" and "，" as punctuation'
+  end
+
+  def test_should_not_use_desu_masu_dialect
+    assert_no_match /(?:です|ます)[。．]/, @pdf.document, 'should not use "です" or "ます" as end of sentences'
   end
 end
