@@ -170,4 +170,8 @@ class TestReportFormat < Test::Unit::TestCase
   def test_should_not_use_desu_masu_dialect
     assert_no_match /(?:です|ます)[。．]/, @pdf.document, 'should not use "です" or "ます" as end of sentences'
   end
+
+  def test_should_not_have_hardcorded_serial_numbers
+    assert_no_match /[表図]\d+/, @pdf.document, 'should not have hardcorded serial number(s)'
+  end
 end
